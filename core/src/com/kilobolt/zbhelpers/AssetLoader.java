@@ -11,12 +11,12 @@ public class AssetLoader {
     public static TextureRegion bg, grass;
 
     public static Animation birdAnimation;
-    public static TextureRegion bird, birdDown, birdUp;
+    public static TextureRegion birdMid, birdDown, birdUp;
 
     public static TextureRegion skullUp, skullDown, bar;
 
     public static void load(){
-        texture = new Texture(Gdx.files.internal("texture.png"));
+        texture = new Texture(Gdx.files.internal("texture-masked.png"));
 
         // this forces our image to look as consistent as possible for our scaling
         texture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
@@ -31,13 +31,13 @@ public class AssetLoader {
         birdDown = new TextureRegion(texture, 136, 0, 17,12);
         birdDown.flip(false, true);
 
-        bird = new TextureRegion(texture, 153, 0, 17, 12);
-        bird.flip(false, true);
+        birdMid = new TextureRegion(texture, 153, 0, 17, 12);
+        birdMid.flip(false, true);
 
         birdUp = new TextureRegion(texture, 170, 0, 17, 12);
         birdUp.flip(false, true);
 
-        TextureRegion[] birds = {birdDown, bird, birdUp};
+        TextureRegion[] birds = {birdDown, birdMid, birdUp};
         birdAnimation = new Animation(0.06f, birds);
         birdAnimation.setPlayMode(Animation.PlayMode.LOOP_PINGPONG);
 
