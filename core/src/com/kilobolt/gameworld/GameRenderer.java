@@ -9,6 +9,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.kilobolt.gameobjects.Bird;
+import com.kilobolt.gameobjects.Grass;
+import com.kilobolt.gameobjects.Pipe;
+import com.kilobolt.gameobjects.ScrollHandler;
 import com.kilobolt.zbhelpers.AssetLoader;
 
 public class GameRenderer {
@@ -22,6 +25,11 @@ public class GameRenderer {
     private int gameHeight;
 
     private Bird myBird;
+
+    private ScrollHandler scroller;
+    private Grass frontGrass, backGrass;
+    private Pipe pipe1, pipe2, pipe3;
+
     public static TextureRegion bg, grass;
 
     public static Animation birdAnimation;
@@ -52,6 +60,12 @@ public class GameRenderer {
 
     private void initGameObjects(){
         myBird = myWorld.getBird();
+        scroller = myWorld.getScroller();
+        frontGrass = scroller.getFrontGrass();
+        backGrass = scroller.getBackGrass();
+        pipe1 = scroller.getPipe1();
+        pipe2 = scroller.getPipe2();
+        pipe3 = scroller.getPipe3();
     }
 
     private void initAssets(){
