@@ -17,6 +17,21 @@ public class Scrollable {
         isScrolledLeft = false;
     }
 
+    public void update(float delta){
+        // continually moving to the left based on velocity
+        position.add(velocity.cpy().scl(delta));
+
+        // when we reach the left edge
+        if(position.x + width < 0){
+            isScrolledLeft = true;
+        }
+    }
+
+    public void reset(float newX){
+        position.x = newX;
+        isScrolledLeft = false;
+    }
+
     public float getX(){
         return position.x;
     }
