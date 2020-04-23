@@ -3,7 +3,7 @@ package com.kilobolt.gameworld;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -21,6 +21,14 @@ public class GameRenderer {
     private int midPointY;
     private int gameHeight;
 
+    private Bird myBird;
+    public static TextureRegion bg, grass;
+
+    public static Animation birdAnimation;
+    public static TextureRegion birdMid, birdDown, birdUp;
+
+    public static TextureRegion skullUp, skullDown, bar;
+
     public GameRenderer(GameWorld world, int gameHeight, int midPointY){
         myWorld = world;
 
@@ -36,12 +44,29 @@ public class GameRenderer {
         batcher.setProjectionMatrix(camera.combined);
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setProjectionMatrix(camera.combined);
+
+        // initializing gameobjects/assets for performance
+        initGameObjects();
+        initAssets();
+    }
+
+    private void initGameObjects(){
+        myBird = myWorld.getBird();
+    }
+
+    private void initAssets(){
+        bg = AssetLoader.bg;
+        grass = AssetLoader.grass;
+        birdAnimation = AssetLoader.birdAnimation;
+        birdMid = AssetLoader.birdMid;
+        birdDown = AssetLoader.birdDown;
+        birdUp = AssetLoader.birdUp;
+        skullUp = AssetLoader.skullUp;
+        skullDown = AssetLoader.skullDown;
+        bar = AssetLoader.bar;
     }
 
     public void render(float runTime){
-        // getting our bird instance from world
-        Bird bird = myWorld.getBird();
-
         //setting our background black - prevents flickering
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
