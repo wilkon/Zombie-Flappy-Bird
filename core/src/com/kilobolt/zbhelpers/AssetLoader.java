@@ -16,7 +16,7 @@ public class AssetLoader {
     public static TextureRegion skullUp, skullDown, bar;
 
     public static void load(){
-        texture = new Texture(Gdx.files.internal("data/texture.png"));
+        texture = new Texture(Gdx.files.internal("texture.png"));
 
         // this forces our image to look as consistent as possible for our scaling
         texture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
