@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import com.kilobot.zombiebird.ZBGame;
+import com.kilobolt.zombiebird.ZBGame;
 
 public class AndroidLauncher extends AndroidApplication {
 	@Override

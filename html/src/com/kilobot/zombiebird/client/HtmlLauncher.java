@@ -3,7 +3,7 @@ package com.kilobot.zombiebird.client;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
-import com.kilobot.zombiebird.ZBGame;
+import com.kilobolt.zombiebird.ZBGame;
 
 public class HtmlLauncher extends GwtApplication {
 

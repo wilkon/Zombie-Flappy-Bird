@@ -1,4 +1,4 @@
-package com.kilobot.zombiebird;
+package com.kilobolt.zombiebird;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
