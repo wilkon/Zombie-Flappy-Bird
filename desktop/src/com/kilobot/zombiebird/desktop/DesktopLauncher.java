@@ -8,7 +8,7 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setTitle("Zombie Bird");
-		config.setWindowSizeLimits(272, 408, 272, 408);
+		config.setWindowedMode(272, 408);
 		new Lwjgl3Application(new ZBGame(), config);
 	}
 }
