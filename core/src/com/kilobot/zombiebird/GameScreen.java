@@ -3,20 +3,28 @@ package com.kilobot.zombiebird;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.kilobolt.gameworld.GameRenderer;
+import com.kilobolt.gameworld.GameWorld;
 
 public class GameScreen implements Screen {
-    @Override
-    public void show() {
 
+    private GameWorld world;
+    private GameRenderer renderer;
+
+    public GameScreen(){
+        world = new GameWorld();
+        renderer = new GameRenderer(world);
     }
 
     @Override
     public void render(float delta) {
-        // sets color with RGB 10, 15, 230 and opacity of 1 (100%)
-        Gdx.gl.glClearColor(10/255.0f, 15/255.0f, 230/255.0f, 1f);
+        world.update(delta);
+        renderer.render();
+    }
 
-        // fills the screen with selected (^) color
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    @Override
+    public void show() {
+
     }
 
     @Override
