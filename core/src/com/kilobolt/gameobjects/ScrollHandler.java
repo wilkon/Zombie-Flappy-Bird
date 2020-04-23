@@ -30,13 +30,13 @@ public class ScrollHandler {
             pipe1.reset(pipe3.getTailX() + PIPE_GAP);
         }else if(pipe2.isScrolledLeft){
             pipe2.reset(pipe1.getTailX() + PIPE_GAP);
-        }else{
+        }else if(pipe3.isScrolledLeft){
             pipe3.reset(pipe2.getTailX() + PIPE_GAP);
         }
 
         if(frontGrass.isScrolledLeft){
             frontGrass.reset(backGrass.getTailX());
-        }else{
+        }else if(backGrass.isScrolledLeft){
             backGrass.reset(frontGrass.getTailX());
         }
     }
