@@ -14,7 +14,7 @@ public class Bird {
     public Bird(float x, float y, int width, int height){
         this.width = width;
         this.height = height;
-        this.position.set(x, y);
+        this.position = new Vector2(x, y);
         this.velocity = new Vector2(0, 0);
         this.acceleration = new Vector2(0, 460);
     }
