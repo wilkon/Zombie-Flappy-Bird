@@ -91,14 +91,25 @@ public class GameRenderer {
         // background doesn't need transparency, so we turn it off
         // good for performance
         batcher.disableBlending();
-        batcher.draw(AssetLoader.bg, 0, midPointY+23, 136, 43);
+        batcher.draw(bg, 0, midPointY+23, 136, 43);
 
         // bird needs transparency, so let's turn it back on
         batcher.enableBlending();
-        batcher.draw(
-                (TextureRegion) AssetLoader.birdAnimation.getKeyFrame(runTime),
-                bird.getX(), bird.getY(), bird.getWidth(), bird.getHeight()
-        );
+        if(myBird.shouldntFlap()){
+            batcher.draw(birdMid,
+                    myBird.getX(), myBird.getY(),
+                    myBird.getWidth() / 2.0f, myBird.getHeight() / 2.0f,
+                    myBird.getWidth(), myBird.getHeight(),
+                    1, 1, myBird.getRotations()
+            );
+        }else{
+            batcher.draw((TextureRegion)birdAnimation.getKeyFrame(runTime),
+                    myBird.getX(), myBird.getY(),
+                    myBird.getWidth() / 2.0f,myBird.getHeight() / 2.0f,
+                    myBird.getWidth(), myBird.getHeight(),
+                    1, 1, myBird.getRotations()
+            );
+        }
 
         batcher.end();
     }
