@@ -14,7 +14,17 @@ public class GameWorld {
 
     private int score = 0;
 
+    public int midPointY;
+
+    private GameState currentState;
+
+    public enum GameState {
+        READY, RUNNING, GAMEOVER
+    }
+
     public GameWorld(int midPointY){
+        currentState = GameState.READY;
+        this.midPointY = midPointY;
         bird = new Bird(33, midPointY - 5, 17, 12);
         scroller = new ScrollHandler(this, midPointY + 66);
 
@@ -22,6 +32,21 @@ public class GameWorld {
     }
 
     public void update(float delta){
+        switch(currentState){
+            case READY:
+                updateReady(delta);
+                break;
+            case RUNNING:
+                updateRunning(delta);
+                break;
+        }
+    }
+
+    private void updateReady(float delta){
+
+    }
+
+    public void updateRunning(float delta){
         bird.update(delta);
         scroller.update(delta);
 
@@ -29,17 +54,35 @@ public class GameWorld {
             scroller.stop();
             bird.die();
             AssetLoader.deathSound.play();
+            currentState = GameState.GAMEOVER;
         }
 
         if(Intersector.overlaps(bird.getBoundingCircle(), ground)){
             scroller.stop();
             bird.die();
             bird.decelerate();
+            currentState = GameState.GAMEOVER;
         }
     }
 
     public void addScore(int increment){
         score += increment;
+    }
+
+    public boolean isReady(){
+        return currentState == GameState.READY;
+    }
+
+    public void start(){
+        currentState = GameState.RUNNING;
+    }
+
+    public void restart(){
+        currentState = GameState.READY;
+        score = 0;
+        bird.onRestart(midPointY - 5);
+        scroller.onRestart(this, midPointY + 66);
+        currentState = GameState.READY;
     }
 
     public int getScore(){ return score; }
