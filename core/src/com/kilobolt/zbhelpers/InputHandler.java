@@ -2,18 +2,28 @@ package com.kilobolt.zbhelpers;
 
 import com.badlogic.gdx.InputProcessor;
 import com.kilobolt.gameobjects.Bird;
+import com.kilobolt.gameworld.GameWorld;
 
 public class InputHandler implements InputProcessor {
+    GameWorld myWorld;
     Bird myBird;
 
-    public InputHandler(Bird bird){
+    public InputHandler(GameWorld myWorld){
+        this.myWorld = myWorld;
         //we're going to get this bird from gameworld
-        myBird = bird;
+        myBird = myWorld.getBird();
     }
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        if(myWorld.isReady()){
+            myWorld.start();
+        }
+
         myBird.onClick();
+        if(myWorld.isGameOver()){
+            myWorld.restart();
+        }
         return true;
     }
 

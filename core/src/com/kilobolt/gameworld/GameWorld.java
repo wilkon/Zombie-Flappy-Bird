@@ -73,6 +73,10 @@ public class GameWorld {
         return currentState == GameState.READY;
     }
 
+    public boolean isGameOver(){
+        return currentState == GameState.GAMEOVER;
+    }
+
     public void start(){
         currentState = GameState.RUNNING;
     }
@@ -81,7 +85,7 @@ public class GameWorld {
         currentState = GameState.READY;
         score = 0;
         bird.onRestart(midPointY - 5);
-        scroller.onRestart(this, midPointY + 66);
+        scroller.onRestart();
         currentState = GameState.READY;
     }
 
