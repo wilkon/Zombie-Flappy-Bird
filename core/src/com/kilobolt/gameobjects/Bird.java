@@ -39,6 +39,12 @@ public class Bird {
             velocity.y = 200;
         }
 
+        // ceiling check
+        if(velocity.y < -13){
+            position.y = -13;
+            velocity.y = 0;
+        }
+
         //rotating counter-clockwise (flapping up)
         if(velocity.y < 0){
             rotation -= 600 * delta;
