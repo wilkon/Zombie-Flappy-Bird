@@ -53,7 +53,7 @@ public class AssetLoader {
 
         bar = new TextureRegion(texture, 136, 16, 22, 3);
         bar.flip(false, true);
-        
+
         deathSound = Gdx.audio.newSound(Gdx.files.internal("deathSound.wav"));
     }
 

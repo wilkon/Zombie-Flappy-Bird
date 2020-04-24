@@ -36,6 +36,10 @@ public class Scrollable {
         return position.x + width;
     }
 
+    public void stop(){
+        velocity.x = 0;
+    }
+
     public float getX(){
         return position.x;
     }
