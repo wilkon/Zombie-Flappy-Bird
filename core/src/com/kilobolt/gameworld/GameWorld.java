@@ -19,7 +19,7 @@ public class GameWorld {
     private GameState currentState;
 
     public enum GameState {
-        READY, RUNNING, GAMEOVER
+        READY, RUNNING, GAMEOVER, HIGHSCORE
     }
 
     public GameWorld(int midPointY){
@@ -78,6 +78,10 @@ public class GameWorld {
 
     public boolean isGameOver(){
         return currentState == GameState.GAMEOVER;
+    }
+
+    public boolean isHighScore(){
+        return currentState == GameState.HIGHSCORE;
     }
 
     public void start(){
