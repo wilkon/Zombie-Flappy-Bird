@@ -47,6 +47,10 @@ public class GameWorld {
     }
 
     public void updateRunning(float delta){
+        if(delta > .15f){
+            delta = .15f;
+        }
+
         bird.update(delta);
         scroller.update(delta);
 
@@ -54,7 +58,6 @@ public class GameWorld {
             scroller.stop();
             bird.die();
             AssetLoader.deathSound.play();
-            currentState = GameState.GAMEOVER;
         }
 
         if(Intersector.overlaps(bird.getBoundingCircle(), ground)){
