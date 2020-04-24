@@ -174,6 +174,13 @@ public class GameRenderer {
             );
         }
 
+        String score = myWorld.getScore() + "";
+
+        // draw shadow first
+        AssetLoader.shadow.draw(batcher, "" + myWorld.getScore(), (136 / 2) - (3 * score.length()), 12);
+
+        // font afterwards - like layering
+        AssetLoader.font.draw(batcher, "" + myWorld.getScore(), 136 / 2 - 3 * score.length(), 12);
         batcher.end();
     }
 }
