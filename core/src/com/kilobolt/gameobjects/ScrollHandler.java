@@ -1,5 +1,8 @@
 package com.kilobolt.gameobjects;
 
+import com.kilobolt.gameworld.GameWorld;
+import com.kilobolt.zbhelpers.AssetLoader;
+
 public class ScrollHandler {
 
     private Grass frontGrass, backGrass;
@@ -8,8 +11,11 @@ public class ScrollHandler {
     public static final int SCROLL_SPEED = -59;
     public static final int PIPE_GAP = 49;
 
+    GameWorld gameWorld;
+
     //float tells us where to create Grass & Pipe objects
-    public ScrollHandler(float yPos){
+    public ScrollHandler(GameWorld gameWorld, float yPos){
+        this.gameWorld = gameWorld;
         frontGrass = new Grass(0, yPos, 143, 11, SCROLL_SPEED);
         backGrass = new Grass(frontGrass.getTailX(), yPos,
                 143, 11, SCROLL_SPEED);
@@ -42,7 +48,25 @@ public class ScrollHandler {
     }
 
     public boolean collides(Bird bird) {
+        if(!pipe1.isScored() && pipe1.position.x + pipe1.getWidth() / 2 < bird.getX() + bird.getWidth()){
+            pipe1.setScored(true);
+            addScore(1);
+            AssetLoader.coinSound.play();
+        }else if(!pipe2.isScored() && pipe2.position.x + pipe2.getWidth() / 2 < bird.getX() + bird.getWidth()){
+            pipe2.setScored(true);
+            addScore(1);
+            AssetLoader.coinSound.play();
+        }else if(!pipe3.isScored() && pipe3.position.x + pipe2.getWidth() / 2 < bird.getX() + bird.getWidth()){
+            pipe3.setScored(true);
+            addScore(1);
+            AssetLoader.coinSound.play();
+        }
+
         return (pipe1.collides(bird) || pipe2.collides(bird) || pipe3.collides(bird));
+    }
+
+    private void addScore(int increment){
+        gameWorld.addScore(increment);
     }
 
     public void stop() {
