@@ -39,6 +39,8 @@ public class GameWorld {
             case RUNNING:
                 updateRunning(delta);
                 break;
+            default:
+                break;
         }
     }
 
@@ -65,6 +67,11 @@ public class GameWorld {
             bird.die();
             bird.decelerate();
             currentState = GameState.GAMEOVER;
+
+            if(score > AssetLoader.getHighScore()) {
+                AssetLoader.setHighScore(score);
+                currentState = GameState.HIGHSCORE;
+            }
         }
     }
 

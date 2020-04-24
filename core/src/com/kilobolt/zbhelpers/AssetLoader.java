@@ -90,12 +90,12 @@ public class AssetLoader {
         font.dispose();
     }
 
-    public void setHighScore(int score){
+    public static void setHighScore(int score){
         prefs.putInteger("highScore", score);
         prefs.flush(); //save
     }
 
-    public int getHighScore(){
+    public static int getHighScore(){
         return prefs.getInteger("highScore");
     }
 }
