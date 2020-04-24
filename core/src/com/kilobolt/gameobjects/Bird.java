@@ -2,6 +2,7 @@ package com.kilobolt.gameobjects;
 
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
+import com.kilobolt.zbhelpers.AssetLoader;
 
 public class Bird {
     private Vector2 position;
@@ -14,6 +15,8 @@ public class Bird {
 
     private Circle boundingCircle;
 
+    private boolean isAlive;
+
     public Bird(float x, float y, int width, int height){
         this.width = width;
         this.height = height;
@@ -21,6 +24,7 @@ public class Bird {
         this.velocity = new Vector2(0, 0);
         this.acceleration = new Vector2(0, 460);
         boundingCircle = new Circle();
+        isAlive = true;
     }
 
     public void update(float delta){
@@ -46,7 +50,7 @@ public class Bird {
         }
 
         // rotating clockwise (falling)
-        if(isFalling()){
+        if(isFalling() || !isAlive){
             rotation += 480 * delta; //keep in mind our math is inclusive of Y Down
             // also note our use of delta for the rotations; moving in accordance to frames/sec
 
@@ -62,7 +66,23 @@ public class Bird {
 
     public void onClick(){
         //velocity is reduced since we're flapping to elevate
-        velocity.y = -140;
+        if(isAlive){
+            AssetLoader.flapSound.play();
+            velocity.y = -140;
+        }
+    }
+
+    public void die(){
+        isAlive = false;
+        velocity.y = 0;
+    }
+
+    public void decelerate(){
+        acceleration.y = 0;
+    }
+
+    public boolean isAlive(){
+        return isAlive;
     }
 
     public boolean isFalling(){
@@ -70,7 +90,7 @@ public class Bird {
     }
 
     public boolean shouldntFlap(){
-        return velocity.y > 70;
+        return velocity.y > 70 || !isAlive;
     }
 
     public Circle getBoundingCircle(){
