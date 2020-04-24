@@ -1,5 +1,6 @@
 package com.kilobolt.gameobjects;
 
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 
 public class Bird {
@@ -11,17 +12,23 @@ public class Bird {
     private int width;
     private int height;
 
+    private Circle boundingCircle;
+
     public Bird(float x, float y, int width, int height){
         this.width = width;
         this.height = height;
         this.position = new Vector2(x, y);
         this.velocity = new Vector2(0, 0);
         this.acceleration = new Vector2(0, 460);
+        boundingCircle = new Circle();
     }
 
     public void update(float delta){
         // increasing velocity to accommodate for gravity (acceleration.y) against delta time
         velocity.add(acceleration.cpy().scl(delta));
+
+        // we want our bounding circle to by slightly towards the front of bird
+        boundingCircle.set(position.x + 9, position.y + 6, 6.5f);
 
         //max drop velocity (terminal velocity)
         if(velocity.y > 200){
@@ -64,6 +71,10 @@ public class Bird {
 
     public boolean shouldntFlap(){
         return velocity.y > 70;
+    }
+
+    public Circle getBoundingCircle(){
+        return boundingCircle;
     }
 
     public float getX(){
