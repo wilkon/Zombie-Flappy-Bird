@@ -174,13 +174,30 @@ public class GameRenderer {
             );
         }
 
-        String score = myWorld.getScore() + "";
+        // displaying ready screen/bird
+        if(myWorld.isReady()){
+            AssetLoader.shadow.draw(batcher, "Touch to start!",
+                    (136/2) - 42, 76);
 
-        // draw shadow first
-        AssetLoader.shadow.draw(batcher, "" + myWorld.getScore(), (136 / 2) - (3 * score.length()), 12);
+            AssetLoader.font.draw(batcher, "Touch to start!",
+                    (136/2) - 70, 76);
+        }else{
+            if(myWorld.isGameOver()) {
+                AssetLoader.shadow.draw(batcher, "Game Over", 25, 56);
+                AssetLoader.font.draw(batcher, "Game Over", 25, 56);
 
-        // font afterwards - like layering
-        AssetLoader.font.draw(batcher, "" + myWorld.getScore(), 136 / 2 - 3 * score.length(), 12);
+                AssetLoader.shadow.draw(batcher, "Try Again?", 23, 76);
+                AssetLoader.font.draw(batcher, "Try Again?", 23, 76);
+            }
+
+            String score = myWorld.getScore() + "";
+
+            // draw shadow first
+            AssetLoader.shadow.draw(batcher, "" + myWorld.getScore(), (136 / 2) - (3 * score.length()), 12);
+
+            // font afterwards - like layering
+            AssetLoader.font.draw(batcher, "" + myWorld.getScore(), 136 / 2 - 3 * score.length(), 12);
+        }
         batcher.end();
     }
 }
