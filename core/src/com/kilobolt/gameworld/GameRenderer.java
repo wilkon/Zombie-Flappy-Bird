@@ -1,6 +1,7 @@
 package com.kilobolt.gameworld;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -174,5 +175,15 @@ public class GameRenderer {
         }
 
         batcher.end();
+
+        //creating our bounding circle
+        shapeRenderer.begin(ShapeType.Filled);
+        shapeRenderer.setColor(Color.RED);
+        shapeRenderer.circle(
+                myBird.getBoundingCircle().x,
+                myBird.getBoundingCircle().y,
+                myBird.getBoundingCircle().radius
+        );
+        shapeRenderer.end();
     }
 }
