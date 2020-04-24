@@ -1,6 +1,7 @@
 package com.kilobolt.zbhelpers;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
@@ -23,7 +24,15 @@ public class AssetLoader {
 
     public static BitmapFont font, shadow;
 
+    public static Preferences prefs;
+
     public static void load(){
+        prefs = Gdx.app.getPreferences("ZombieBird");
+
+        if(!prefs.contains("highScore")){
+            prefs.putInteger("highSchore", 0);
+        }
+
         texture = new Texture(Gdx.files.internal("texture-masked.png"));
 
         // this forces our image to look as consistent as possible for our scaling
@@ -81,4 +90,12 @@ public class AssetLoader {
         font.dispose();
     }
 
+    public void setHighScore(int score){
+        prefs.putInteger("highScore", score);
+        prefs.flush(); //save
+    }
+
+    public int getHighScore(){
+        return prefs.getInteger("highScore");
+    }
 }
