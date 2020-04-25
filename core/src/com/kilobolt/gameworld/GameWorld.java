@@ -19,7 +19,7 @@ public class GameWorld {
     private GameState currentState;
 
     public enum GameState {
-        READY, RUNNING, GAMEOVER, HIGHSCORE
+        READY, RUNNING, GAMEOVER, HIGHSCORE, ISMENU
     }
 
     public GameWorld(int midPointY){
@@ -91,6 +91,8 @@ public class GameWorld {
         return currentState == GameState.HIGHSCORE;
     }
 
+    public boolean isMenu() { return currentState == GameState.ISMENU; };
+
     public void start(){
         currentState = GameState.RUNNING;
     }
@@ -100,6 +102,14 @@ public class GameWorld {
         score = 0;
         bird.onRestart(midPointY - 5);
         scroller.onRestart();
+        currentState = GameState.READY;
+    }
+
+    public int getMidPointY(){
+        return midPointY;
+    };
+
+    public void ready(){
         currentState = GameState.READY;
     }
 
