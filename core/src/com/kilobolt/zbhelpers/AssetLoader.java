@@ -10,13 +10,16 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class AssetLoader {
-    public static Texture texture;
+    public static Texture texture, logoTexture;
     public static TextureRegion bg, grass;
 
     public static Animation birdAnimation;
     public static TextureRegion birdMid, birdDown, birdUp;
 
     public static TextureRegion skullUp, skullDown, bar;
+
+    public static TextureRegion playButtonUp, playButtonDown;
+    public static TextureRegion logo, zbLogo;
 
     public static Sound deathSound;
     public static Sound flapSound;
@@ -27,16 +30,23 @@ public class AssetLoader {
     public static Preferences prefs;
 
     public static void load(){
-        prefs = Gdx.app.getPreferences("ZombieBird");
+        logoTexture = new Texture(Gdx.files.internal("logo.png"));
+        logoTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
-        if(!prefs.contains("highScore")){
-            prefs.putInteger("highSchore", 0);
-        }
+        logo = new TextureRegion(logoTexture, 0, 0, 512, 114);
 
         texture = new Texture(Gdx.files.internal("texture-masked.png"));
 
         // this forces our image to look as consistent as possible for our scaling
         texture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+
+        playButtonUp = new TextureRegion(texture, 0, 83, 29, 16);
+        playButtonDown = new TextureRegion(texture, 29, 83, 29, 16);
+        playButtonUp.flip(false, true);
+        playButtonDown.flip(false, true);
+
+        zbLogo = new TextureRegion(texture, 0, 55, 135, 24);
+        zbLogo.flip(false, true);
 
         // we're going to flip on the y axis since we're setting y-down coordinate system
         bg = new TextureRegion(texture, 0, 0, 136, 43);
@@ -77,10 +87,16 @@ public class AssetLoader {
 
         shadow = new BitmapFont(Gdx.files.internal("shadow.fnt"));
         shadow.getData().setScale(.25f, -.25f);
+
+        prefs = Gdx.app.getPreferences("ZombieBird");
+        if(!prefs.contains("highScore")){
+            prefs.putInteger("highSchore", 0);
+        }
     }
 
     public static void dispose(){
         texture.dispose();
+        logoTexture.dispose();
 
         deathSound.dispose();
         flapSound.dispose();
