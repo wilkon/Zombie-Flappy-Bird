@@ -47,7 +47,7 @@ public class GameRenderer {
 
     public static TextureRegion skullUp, skullDown, bar;
 
-    private TextureRegion star, noStar, scoreBoard, gameOver, ready, retry;
+    private TextureRegion star, noStar, scoreBoard, gameOver, ready, retry, highScore;
 
     private TweenManager manager;
     private Value alpha = new Value();
@@ -76,19 +76,9 @@ public class GameRenderer {
         // initializing gameobjects/assets for performance
         initGameObjects();
         initAssets();
-        setupTweens();
 
         transitionColor = new Color();
         prepareTransition(255, 255, 255, .5f);
-    }
-
-    private void setupTweens(){
-        Tween.registerAccessor(Value.class, new ValueAccessor());
-        manager = new TweenManager();
-        Tween.to(alpha, -1, .5f)
-                .target(0)
-                .ease(TweenEquations.easeOutQuad)
-                .start(manager);
     }
 
     private void initGameObjects(){
@@ -117,6 +107,7 @@ public class GameRenderer {
         gameOver = AssetLoader.gameOver;
         ready = AssetLoader.ready;
         retry = AssetLoader.retry;
+        highScore = AssetLoader.highScore;
     }
 
     private void drawGrass(){
@@ -254,6 +245,10 @@ public class GameRenderer {
         batcher.draw(gameOver, 24, midPointY - 50, 92, 14);
     }
 
+    private void drawHighScore() {
+        batcher.draw(highScore, 22, midPointY - 50, 96, 14);
+    }
+
     public void render(float delta, float runTime){
         //setting our background black - prevents flickering
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -282,34 +277,34 @@ public class GameRenderer {
         batcher.draw(bg, 0, midPointY+23, 136, 43);
 
 
-        drawGrass();
         drawPipes();
 
         // bird needs transparency, so let's turn it back on
         batcher.enableBlending();
         drawSkulls();
 
-        if (myWorld.isRunning() || myWorld.isReady()) {
+        if (myWorld.isRunning()) {
             drawBird(runTime);
             drawScore();
         } else if (myWorld.isReady()) {
             drawBird(runTime);
-            drawScore();
+            drawReady();
         } else if (myWorld.isMenu()) {
             drawBirdCentered(runTime);
             drawMenuUI();
         } else if (myWorld.isGameOver()) {
             drawScoreBoard();
             drawBird(runTime);
-            drawScore();
             drawGameOver();
             drawRetry();
         } else if (myWorld.isHighScore()) {
             drawScoreBoard();
             drawBird(runTime);
-            drawScore();
+            drawHighScore();
             drawRetry();
         }
+
+        drawGrass();
 
         batcher.end();
         drawTransition(delta);
