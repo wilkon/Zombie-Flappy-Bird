@@ -12,6 +12,7 @@ public class Bird {
     private float rotation;
     private int width;
     private int height;
+    private float originalY;
 
     private Circle boundingCircle;
 
@@ -20,6 +21,7 @@ public class Bird {
     public Bird(float x, float y, int width, int height){
         this.width = width;
         this.height = height;
+        this.originalY = y;
         this.position = new Vector2(x, y);
         this.velocity = new Vector2(0, 0);
         this.acceleration = new Vector2(0, 460);
@@ -72,6 +74,10 @@ public class Bird {
             }
         }
 
+    }
+
+    public void updateReady(float runTime){
+        position.y = originalY;
     }
 
     public void onClick(){
