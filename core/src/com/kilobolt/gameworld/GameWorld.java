@@ -19,6 +19,8 @@ public class GameWorld {
 
     private GameState currentState;
 
+    private GameRenderer renderer;
+
     public enum GameState {
         READY, RUNNING, GAMEOVER, HIGHSCORE, MENU
     }
@@ -78,6 +80,10 @@ public class GameWorld {
                 currentState = GameState.HIGHSCORE;
             }
         }
+    }
+
+    public void setRenderer(GameRenderer renderer){
+        this.renderer = renderer;
     }
 
     public void addScore(int increment){

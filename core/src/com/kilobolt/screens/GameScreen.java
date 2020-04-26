@@ -30,6 +30,7 @@ public class GameScreen implements Screen {
         ));
 
         renderer = new GameRenderer(world, (int) gameHeight, midPointY);
+        world.setRenderer(renderer);
     }
 
     @Override
