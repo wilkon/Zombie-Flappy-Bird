@@ -47,6 +47,17 @@ public class ScrollHandler {
         }
     }
 
+    public void updateReady(float delta){
+        frontGrass.update(delta);
+        backGrass.update(delta);
+
+        if(frontGrass.isScrolledLeft){
+            frontGrass.reset(backGrass.getTailX());
+        }else if(backGrass.isScrolledLeft){
+            backGrass.reset(frontGrass.getTailX());
+        }
+    }
+
     public boolean collides(Bird bird) {
         if(!pipe1.isScored() && pipe1.position.x + pipe1.getWidth() / 2 < bird.getX() + bird.getWidth()){
             pipe1.setScored(true);
