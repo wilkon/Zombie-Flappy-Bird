@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.kilobolt.tweenaccessors.SpriteAccessor;
 import com.kilobolt.zbhelpers.AssetLoader;
-import com.kilobolt.zombiebird.GameScreen;
 import com.kilobolt.zombiebird.ZBGame;
 
 public class SplashScreen  implements Screen {

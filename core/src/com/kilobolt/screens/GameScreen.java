@@ -1,4 +1,4 @@
-package com.kilobolt.zombiebird;
+package com.kilobolt.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
