@@ -20,12 +20,15 @@ public class AssetLoader {
 
     public static TextureRegion playButtonUp, playButtonDown;
     public static TextureRegion logo, zbLogo;
+    public static TextureRegion ready, gameOver, highScore;
+    public static TextureRegion scoreBoard, star, noStar, retry;
 
     public static Sound deathSound;
     public static Sound flapSound;
     public static Sound coinSound;
+    public static Sound fallingSound;
 
-    public static BitmapFont font, shadow;
+    public static BitmapFont font, shadow, whiteFont;
 
     public static Preferences prefs;
 
@@ -44,6 +47,24 @@ public class AssetLoader {
         playButtonDown = new TextureRegion(texture, 29, 83, 29, 16);
         playButtonUp.flip(false, true);
         playButtonDown.flip(false, true);
+
+        ready = new TextureRegion(texture, 59, 83, 34, 7);
+        ready.flip(false, true);
+
+        retry = new TextureRegion(texture, 59, 110, 13, 7);
+        retry.flip(false, true);
+
+        gameOver = new TextureRegion(texture, 59, 92, 46, 7);
+        gameOver.flip(false, true);
+
+        scoreBoard = new TextureRegion(texture, 111, 83, 97, 37);
+        scoreBoard.flip(false, true);
+
+        star = new TextureRegion(texture, 152, 70, 10, 10);
+        noStar = new TextureRegion(texture, 165, 70, 10, 10);
+
+        highScore = new TextureRegion(texture, 59, 101, 48, 7);
+        highScore.flip(false, true);
 
         zbLogo = new TextureRegion(texture, 0, 55, 135, 24);
         zbLogo.flip(false, true);
@@ -81,6 +102,7 @@ public class AssetLoader {
         deathSound = Gdx.audio.newSound(Gdx.files.internal("dead.wav"));
         flapSound = Gdx.audio.newSound(Gdx.files.internal("flap.wav"));
         coinSound = Gdx.audio.newSound(Gdx.files.internal("coin.wav"));
+        fallingSound = Gdx.audio.newSound(Gdx.files.internal("fall.wav"));
 
         font = new BitmapFont(Gdx.files.internal("text.fnt"));
         font.getData().setScale(.25f, -.25f);
@@ -88,10 +110,22 @@ public class AssetLoader {
         shadow = new BitmapFont(Gdx.files.internal("shadow.fnt"));
         shadow.getData().setScale(.25f, -.25f);
 
+        whiteFont = new BitmapFont(Gdx.files.internal("whitetext.fnt"));
+        whiteFont.getData().setScale(.25f, .25f);
+
         prefs = Gdx.app.getPreferences("ZombieBird");
         if(!prefs.contains("highScore")){
             prefs.putInteger("highSchore", 0);
         }
+    }
+
+    public static void setHighScore(int score){
+        prefs.putInteger("highScore", score);
+        prefs.flush(); //save
+    }
+
+    public static int getHighScore(){
+        return prefs.getInteger("highScore");
     }
 
     public static void dispose(){
@@ -104,14 +138,5 @@ public class AssetLoader {
 
         shadow.dispose();
         font.dispose();
-    }
-
-    public static void setHighScore(int score){
-        prefs.putInteger("highScore", score);
-        prefs.flush(); //save
-    }
-
-    public static int getHighScore(){
-        return prefs.getInteger("highScore");
     }
 }
