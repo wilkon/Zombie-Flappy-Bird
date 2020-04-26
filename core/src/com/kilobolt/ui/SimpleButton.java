@@ -3,6 +3,7 @@ package com.kilobolt.ui;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
+import com.kilobolt.zbhelpers.AssetLoader;
 
 public class SimpleButton {
     private float x, y, width, height;
@@ -50,6 +51,7 @@ public class SimpleButton {
     public boolean isTouchUp(int screenX, int screenY){
         if(isPressed && bounds.contains(screenX, screenY)){
             isPressed = false;
+            AssetLoader.flapSound.play();
             return true;
         }
         isPressed = false;
