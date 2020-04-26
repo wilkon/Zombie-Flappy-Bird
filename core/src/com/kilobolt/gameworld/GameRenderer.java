@@ -47,7 +47,7 @@ public class GameRenderer {
 
     public static TextureRegion skullUp, skullDown, bar;
 
-    private TextureRegion star, noStar, scoreBoard;
+    private TextureRegion star, noStar, scoreBoard, gameOver, ready, retry;
 
     private TweenManager manager;
     private Value alpha = new Value();
@@ -114,6 +114,9 @@ public class GameRenderer {
         star = AssetLoader.star;
         noStar = AssetLoader.noStar;
         scoreBoard = AssetLoader.scoreBoard;
+        gameOver = AssetLoader.gameOver;
+        ready = AssetLoader.ready;
+        retry = AssetLoader.retry;
     }
 
     private void drawGrass(){
@@ -239,6 +242,17 @@ public class GameRenderer {
                 104 - (2.5f * length2), midPointY - 3);
 
     }
+    private void drawRetry() {
+        batcher.draw(retry, 36, midPointY + 10, 66, 14);
+    }
+
+    private void drawReady() {
+        batcher.draw(ready, 36, midPointY - 50, 68, 14);
+    }
+
+    private void drawGameOver() {
+        batcher.draw(gameOver, 24, midPointY - 50, 92, 14);
+    }
 
     public void render(float delta, float runTime){
         //setting our background black - prevents flickering
@@ -288,10 +302,13 @@ public class GameRenderer {
             drawScoreBoard();
             drawBird(runTime);
             drawScore();
+            drawGameOver();
+            drawRetry();
         } else if (myWorld.isHighScore()) {
             drawScoreBoard();
             drawBird(runTime);
             drawScore();
+            drawRetry();
         }
 
         batcher.end();
