@@ -6,7 +6,7 @@ Join me as I go through Kilobolt's very old, but still very good [tutorial](http
 Caveats
 - This dude uses a lot of magic numbers (A LOT). 
 - The tutorials between Day 9 - 12 were basically reading code to match comparisons.
-- I didn't copy any of the source code directly until the last day <br> (where I was really just debugging to make it work properly).
+- I didn't copy any of the source code directly until the last day <br> (where I was really just debugging the UI to make it display/work properly).
 - File structure isn't ideal, but isn't the worst. (EG - GameRenderer turns out to be massive). 
 - Going to put off fixing a lot of UI because it ends up being very difficult <br>sorting through all his magic numbers and where exactly they originate.
 
