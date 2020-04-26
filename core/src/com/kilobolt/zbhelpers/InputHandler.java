@@ -58,16 +58,18 @@ public class InputHandler implements InputProcessor {
         return true;
     }
 
-    private int scaleX(int screenX){
-        return (int)(screenX / scaleFactorX);
-    }
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        screenX = scaleX(screenX);
+        screenY = scaleY(screenY);
 
-    private int scaleY(int screenY){
-        return (int)(screenY / scaleFactorY);
-    }
-
-    public List<SimpleButton> getMenuButtons(){
-        return menuButtons;
+        if(myWorld.isMenu()){
+            if(playButton.isTouchUp(screenX, screenY)){
+                myWorld.isReady();
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -90,19 +92,18 @@ public class InputHandler implements InputProcessor {
         return false;
     }
 
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        screenX = scaleX(screenX);
-        screenY = scaleY(screenY);
-
-        if(myWorld.isMenu()){
-            if(playButton.isTouchUp(screenX, screenY)){
-                myWorld.isReady();
-                return true;
-            }
-        }
-        return false;
+    private int scaleX(int screenX){
+        return (int)(screenX / scaleFactorX);
     }
+
+    private int scaleY(int screenY){
+        return (int)(screenY / scaleFactorY);
+    }
+
+    public List<SimpleButton> getMenuButtons(){
+        return menuButtons;
+    }
+
 
     @Override
     public boolean keyUp(int keycode) {
