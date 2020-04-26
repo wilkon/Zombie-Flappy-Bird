@@ -1,7 +1,9 @@
 package com.kilobolt.gameworld;
 
+import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenEquations;
+import aurelienribon.tweenengine.TweenManager;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -13,7 +15,13 @@ import com.kilobolt.gameobjects.Bird;
 import com.kilobolt.gameobjects.Grass;
 import com.kilobolt.gameobjects.Pipe;
 import com.kilobolt.gameobjects.ScrollHandler;
+import com.kilobolt.tweenaccessors.Value;
+import com.kilobolt.tweenaccessors.ValueAccessor;
+import com.kilobolt.ui.SimpleButton;
 import com.kilobolt.zbhelpers.AssetLoader;
+import com.kilobolt.zbhelpers.InputHandler;
+
+import java.util.List;
 
 public class GameRenderer {
     GameWorld myWorld;
@@ -23,7 +31,6 @@ public class GameRenderer {
     private SpriteBatch batcher;
 
     private int midPointY;
-    private int gameHeight;
 
     private Bird myBird;
 
@@ -38,11 +45,18 @@ public class GameRenderer {
 
     public static TextureRegion skullUp, skullDown, bar;
 
+    private TweenManager manager;
+    private Value alpha = new Value();
+
+    private List<SimpleButton> menuButtons;
+
     public GameRenderer(GameWorld world, int gameHeight, int midPointY){
         myWorld = world;
 
-        this.gameHeight = gameHeight;
         this.midPointY = midPointY;
+
+        this.menuButtons = ((InputHandler) Gdx.input.getInputProcessor())
+                .getMenuButtons();
 
         // camera takes in the gameheight to account for any scaling
         camera = new OrthographicCamera();
@@ -57,6 +71,16 @@ public class GameRenderer {
         // initializing gameobjects/assets for performance
         initGameObjects();
         initAssets();
+        setupTweens();
+    }
+
+    private void setupTweens(){
+        Tween.registerAccessor(Value.class, new ValueAccessor());
+        manager = new TweenManager();
+        Tween.to(alpha, -1, .5f)
+                .target(0)
+                .ease(TweenEquations.easeOutQuad)
+                .start(manager);
     }
 
     private void initGameObjects(){
@@ -123,7 +147,49 @@ public class GameRenderer {
                 pipe3.getWidth(), midPointY + 66 - (pipe3.getHeight() + 45));
     }
 
-    public void render(float runTime){
+    private void drawBirdCentered(float runTime) {
+        batcher.draw((TextureRegion) birdAnimation.getKeyFrame(runTime), 59, myBird.getY() - 15,
+                myBird.getWidth() / 2.0f, myBird.getHeight() / 2.0f,
+                myBird.getWidth(), myBird.getHeight(), 1, 1, myBird.getRotation());
+    }
+
+    private void drawBird(float runTime) {
+
+        if (myBird.shouldntFlap()) {
+            batcher.draw(birdMid, myBird.getX(), myBird.getY(),
+                    myBird.getWidth() / 2.0f, myBird.getHeight() / 2.0f,
+                    myBird.getWidth(), myBird.getHeight(), 1, 1, myBird.getRotation());
+
+        } else {
+            batcher.draw((TextureRegion) birdAnimation.getKeyFrame(runTime), myBird.getX(),
+                    myBird.getY(), myBird.getWidth() / 2.0f,
+                    myBird.getHeight() / 2.0f, myBird.getWidth(), myBird.getHeight(),
+                    1, 1, myBird.getRotation());
+        }
+
+    }
+
+    private void drawMenuUI(){
+        batcher.draw(AssetLoader.zbLogo, 136/2-56, midPointY - 50,
+                AssetLoader.zbLogo.getRegionWidth() / 1.2f,
+                AssetLoader.zbLogo.getRegionHeight() / 1.2f
+        );
+
+        for(SimpleButton button : menuButtons){
+            button.draw(batcher);
+        }
+    }
+
+    private void drawScore(){
+        int length = ("" + myWorld.getScore()).length();
+        // draw shadow first
+        AssetLoader.shadow.draw(batcher, "" + myWorld.getScore(), (136 / 2) - (3 * length), 12);
+
+        // font afterwards - like layering
+        AssetLoader.font.draw(batcher, "" + myWorld.getScore(), (136 / 2) - (3 * length), 12);
+    }
+
+    public void render(float delta, float runTime){
         //setting our background black - prevents flickering
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -158,65 +224,37 @@ public class GameRenderer {
         batcher.enableBlending();
         drawSkulls();
 
-        if(myBird.shouldntFlap()){
-            batcher.draw(birdMid,
-                    myBird.getX(), myBird.getY(),
-                    myBird.getWidth() / 2.0f, myBird.getHeight() / 2.0f,
-                    myBird.getWidth(), myBird.getHeight(),
-                    1, 1, myBird.getRotations()
-            );
-        }else{
-            batcher.draw((TextureRegion)birdAnimation.getKeyFrame(runTime),
-                    myBird.getX(), myBird.getY(),
-                    myBird.getWidth() / 2.0f,myBird.getHeight() / 2.0f,
-                    myBird.getWidth(), myBird.getHeight(),
-                    1, 1, myBird.getRotations()
-            );
+        if (myWorld.isRunning() || myWorld.isReady()) {
+            drawBird(runTime);
+            drawScore();
+        } else if (myWorld.isReady()) {
+            drawBird(runTime);
+            drawScore();
+        } else if (myWorld.isMenu()) {
+            drawBirdCentered(runTime);
+            drawMenuUI();
+        } else if (myWorld.isGameOver()) {
+            drawBird(runTime);
+            drawScore();
+        } else if (myWorld.isHighScore()) {
+            drawBird(runTime);
+            drawScore();
         }
 
-        // displaying ready screen/bird
-        if(myWorld.isReady()){
-            AssetLoader.shadow.draw(batcher, "Touch to start!",
-                    (136/2) - 42, 76);
-
-            AssetLoader.font.draw(batcher, "Touch to start!",
-                    (136/2) - 70, 76);
-        }else{
-            if(myWorld.isGameOver() || myWorld.isHighScore()) {
-                if(myWorld.isGameOver()){
-                    AssetLoader.shadow.draw(batcher, "Game Over", 25, 56);
-                    AssetLoader.font.draw(batcher, "Game Over", 25, 56);
-
-                    AssetLoader.shadow.draw(batcher, "High Score: ", 23, 106);
-                    AssetLoader.font.draw(batcher, "High Score: ", 22, 105);
-
-                    String highScore = AssetLoader.getHighScore() + "";
-
-                    AssetLoader.shadow.draw(batcher, highScore,
-                            (136/2) - (3 * highScore.length()), 128);
-                    AssetLoader.font.draw(batcher, highScore,
-                            (136/2) - (3 * highScore.length() - 1), 127);
-                }else{
-                    AssetLoader.shadow.draw(batcher, "High Score!", 19, 56);
-                    AssetLoader.font.draw(batcher, "High Score", 18, 55);
-                }
-
-                AssetLoader.shadow.draw(batcher, "Try Again?", 23, 76);
-                AssetLoader.font.draw(batcher, "Try Again?", 23, 76);
-
-                String score = myWorld.getScore() + "";
-                AssetLoader.shadow.draw(batcher, score, (136/2) - (3 * score.length()), 12);
-                AssetLoader.font.draw(batcher, score, (136/2) - (3 * score.length() - 1 ), 11);
-            }
-
-            String score = myWorld.getScore() + "";
-
-            // draw shadow first
-            AssetLoader.shadow.draw(batcher, "" + myWorld.getScore(), (136 / 2) - (3 * score.length()), 12);
-
-            // font afterwards - like layering
-            AssetLoader.font.draw(batcher, "" + myWorld.getScore(), 136 / 2 - 3 * score.length(), 12);
-        }
         batcher.end();
+        drawTransition(delta);
+    }
+
+    private void drawTransition(float delta){
+        if(alpha.getValue() > 0){
+            manager.update(delta);
+            Gdx.gl.glEnable(GL20.GL_BLEND);
+            Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+            shapeRenderer.begin(ShapeType.Filled);
+            shapeRenderer.setColor(1, 1, 1, alpha.getValue());
+            shapeRenderer.rect(0, 0, 136, 300);
+            shapeRenderer.end();
+            Gdx.gl.glDisable(GL20.GL_BLEND);
+        }
     }
 }
