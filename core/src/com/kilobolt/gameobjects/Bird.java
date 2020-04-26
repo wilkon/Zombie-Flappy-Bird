@@ -119,9 +119,7 @@ public class Bird {
         return velocity.y > 70 || !isAlive;
     }
 
-    public Circle getBoundingCircle(){
-        return boundingCircle;
-    }
+    public Circle getBoundingCircle(){ return boundingCircle; }
 
     public float getX(){
         return position.x;
@@ -131,7 +129,7 @@ public class Bird {
         return position.y;
     }
 
-    public float getRotations() {
+    public float getRotation() {
         return rotation;
     }
 
