@@ -22,6 +22,7 @@ import com.kilobolt.ui.SimpleButton;
 import com.kilobolt.zbhelpers.AssetLoader;
 import com.kilobolt.zbhelpers.InputHandler;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class GameRenderer {
@@ -45,6 +46,8 @@ public class GameRenderer {
     public static TextureRegion birdMid, birdDown, birdUp;
 
     public static TextureRegion skullUp, skullDown, bar;
+
+    private TextureRegion star, noStar, scoreBoard;
 
     private TweenManager manager;
     private Value alpha = new Value();
@@ -108,6 +111,9 @@ public class GameRenderer {
         skullUp = AssetLoader.skullUp;
         skullDown = AssetLoader.skullDown;
         bar = AssetLoader.bar;
+        star = AssetLoader.star;
+        noStar = AssetLoader.noStar;
+        scoreBoard = AssetLoader.scoreBoard;
     }
 
     private void drawGrass(){
@@ -194,6 +200,46 @@ public class GameRenderer {
         AssetLoader.font.draw(batcher, "" + myWorld.getScore(), (136 / 2) - (3 * length), 12);
     }
 
+    private void drawScoreBoard() {
+        batcher.draw(scoreBoard, 22, midPointY - 30, 97, 37);
+
+        batcher.draw(noStar, 25, midPointY - 15, 10, 10);
+        batcher.draw(noStar, 37, midPointY - 15, 10, 10);
+        batcher.draw(noStar, 49, midPointY - 15, 10, 10);
+        batcher.draw(noStar, 61, midPointY - 15, 10, 10);
+        batcher.draw(noStar, 73, midPointY - 15, 10, 10);
+
+        if (myWorld.getScore() > 2) {
+            batcher.draw(star, 73, midPointY - 15, 10, 10);
+        }
+
+        if (myWorld.getScore() > 17) {
+            batcher.draw(star, 61, midPointY - 15, 10, 10);
+        }
+
+        if (myWorld.getScore() > 50) {
+            batcher.draw(star, 49, midPointY - 15, 10, 10);
+        }
+
+        if (myWorld.getScore() > 80) {
+            batcher.draw(star, 37, midPointY - 15, 10, 10);
+        }
+
+        if (myWorld.getScore() > 120) {
+            batcher.draw(star, 25, midPointY - 15, 10, 10);
+        }
+
+        int length = ("" + myWorld.getScore()).length();
+
+        AssetLoader.whiteFont.draw(batcher, "" + myWorld.getScore(),
+                104 - (2 * length), midPointY - 20);
+
+        int length2 = ("" + AssetLoader.getHighScore()).length();
+        AssetLoader.whiteFont.draw(batcher, "" + AssetLoader.getHighScore(),
+                104 - (2.5f * length2), midPointY - 3);
+
+    }
+
     public void render(float delta, float runTime){
         //setting our background black - prevents flickering
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -239,9 +285,11 @@ public class GameRenderer {
             drawBirdCentered(runTime);
             drawMenuUI();
         } else if (myWorld.isGameOver()) {
+            drawScoreBoard();
             drawBird(runTime);
             drawScore();
         } else if (myWorld.isHighScore()) {
+            drawScoreBoard();
             drawBird(runTime);
             drawScore();
         }
