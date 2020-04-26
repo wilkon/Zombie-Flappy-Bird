@@ -77,7 +77,7 @@ public class Bird {
     }
 
     public void updateReady(float runTime){
-        position.y = originalY;
+        position.y = 2 * (float) Math.sin(7 * runTime) + originalY;
     }
 
     public void onClick(){
