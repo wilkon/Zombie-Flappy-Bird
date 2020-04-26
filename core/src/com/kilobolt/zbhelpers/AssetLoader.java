@@ -38,7 +38,7 @@ public class AssetLoader {
 
         logo = new TextureRegion(logoTexture, 0, 0, 512, 114);
 
-        texture = new Texture(Gdx.files.internal("texture-masked.png"));
+        texture = new Texture(Gdx.files.internal("texture.png"));
 
         // this forces our image to look as consistent as possible for our scaling
         texture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
