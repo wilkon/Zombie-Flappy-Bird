@@ -13,4 +13,4 @@ Caveats
 Gains
 + Good enough understanding of the library to get started (Really all I wanted).
 + Flexed my spaghetti code reading abilities.
-+ it's not pretty (or even mine), but first LibGDX Game √
++ it's not pretty (or even mine), but first LibGDX Game
