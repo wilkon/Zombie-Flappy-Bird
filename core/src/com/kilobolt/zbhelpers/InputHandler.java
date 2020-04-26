@@ -104,7 +104,6 @@ public class InputHandler implements InputProcessor {
         return menuButtons;
     }
 
-
     @Override
     public boolean keyUp(int keycode) {
         return false;
