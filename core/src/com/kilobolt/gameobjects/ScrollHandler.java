@@ -59,15 +59,15 @@ public class ScrollHandler {
     }
 
     public boolean collides(Bird bird) {
-        if(!pipe1.isScored() && pipe1.position.x + pipe1.getWidth() / 2 < bird.getX() + bird.getWidth()){
+        if(!pipe1.isScored() && pipe1.getX() + pipe1.getWidth() / 2 < bird.getX() + bird.getWidth()){
             pipe1.setScored(true);
             addScore(1);
             AssetLoader.coinSound.play();
-        }else if(!pipe2.isScored() && pipe2.position.x + pipe2.getWidth() / 2 < bird.getX() + bird.getWidth()){
+        }else if(!pipe2.isScored() && pipe2.getX() + pipe2.getWidth() / 2 < bird.getX() + bird.getWidth()){
             pipe2.setScored(true);
             addScore(1);
             AssetLoader.coinSound.play();
-        }else if(!pipe3.isScored() && pipe3.position.x + pipe2.getWidth() / 2 < bird.getX() + bird.getWidth()){
+        }else if(!pipe3.isScored() && pipe3.getX() + pipe2.getWidth() / 2 < bird.getX() + bird.getWidth()){
             pipe3.setScored(true);
             addScore(1);
             AssetLoader.coinSound.play();
