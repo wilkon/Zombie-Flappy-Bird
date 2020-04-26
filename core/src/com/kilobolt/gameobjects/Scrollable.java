@@ -40,6 +40,7 @@ public class Scrollable {
         velocity.x = 0;
     }
 
+    public boolean isScrolledLeft(){ return isScrolledLeft; }
     public float getX(){
         return position.x;
     }
