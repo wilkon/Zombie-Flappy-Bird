@@ -4,6 +4,7 @@ import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenEquations;
 import aurelienribon.tweenengine.TweenManager;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -49,6 +50,7 @@ public class GameRenderer {
     private Value alpha = new Value();
 
     private List<SimpleButton> menuButtons;
+    private Color transitionColor;
 
     public GameRenderer(GameWorld world, int gameHeight, int midPointY){
         myWorld = world;
@@ -72,6 +74,9 @@ public class GameRenderer {
         initGameObjects();
         initAssets();
         setupTweens();
+
+        transitionColor = new Color();
+        prepareTransition(255, 255, 255, .5f);
     }
 
     private void setupTweens(){
@@ -245,13 +250,24 @@ public class GameRenderer {
         drawTransition(delta);
     }
 
+    public void prepareTransition(int r, int g, int b, float duration){
+        transitionColor.set(r/255.0f, g/255.0f, b/255.0f, 1);
+        alpha.setValue(1);
+        Tween.registerAccessor(Value.class, new ValueAccessor());
+        manager = new TweenManager();
+        Tween.to(alpha, -1, duration)
+                .target(0)
+                .ease(TweenEquations.easeOutQuad)
+                .start(manager);
+    }
+
     private void drawTransition(float delta){
         if(alpha.getValue() > 0){
             manager.update(delta);
             Gdx.gl.glEnable(GL20.GL_BLEND);
             Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
             shapeRenderer.begin(ShapeType.Filled);
-            shapeRenderer.setColor(1, 1, 1, alpha.getValue());
+            shapeRenderer.setColor(transitionColor.r, transitionColor.g, transitionColor.b, alpha.getValue());
             shapeRenderer.rect(0, 0, 136, 300);
             shapeRenderer.end();
             Gdx.gl.glDisable(GL20.GL_BLEND);

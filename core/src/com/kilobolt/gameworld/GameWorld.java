@@ -125,6 +125,7 @@ public class GameWorld {
 
     public void ready(){
         currentState = GameState.READY;
+        renderer.prepareTransition(0, 0, 0, 1f);
     }
 
     public int getScore(){ return score; }
