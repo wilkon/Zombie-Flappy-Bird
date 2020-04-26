@@ -13,27 +13,30 @@ public class GameWorld {
     private Rectangle ground;
 
     private int score = 0;
+    private float runTime = 0;
 
     public int midPointY;
 
     private GameState currentState;
 
     public enum GameState {
-        READY, RUNNING, GAMEOVER, HIGHSCORE, ISMENU
+        READY, RUNNING, GAMEOVER, HIGHSCORE, MENU
     }
 
     public GameWorld(int midPointY){
-        currentState = GameState.READY;
+        currentState = GameState.MENU;
         this.midPointY = midPointY;
         bird = new Bird(33, midPointY - 5, 17, 12);
         scroller = new ScrollHandler(this, midPointY + 66);
-
-        ground = new Rectangle(0, midPointY + 66, 136, 11);
+        ground = new Rectangle(0, midPointY + 66, 137, 11);
     }
 
     public void update(float delta){
+        runTime += delta;
+
         switch(currentState){
             case READY:
+            case MENU:
                 updateReady(delta);
                 break;
             case RUNNING:
@@ -45,7 +48,8 @@ public class GameWorld {
     }
 
     private void updateReady(float delta){
-
+        bird.updateReady(runTime);
+        scroller.updateReady(delta);
     }
 
     public void updateRunning(float delta){
@@ -66,6 +70,7 @@ public class GameWorld {
             scroller.stop();
             bird.die();
             bird.decelerate();
+            AssetLoader.deathSound.play();
             currentState = GameState.GAMEOVER;
 
             if(score > AssetLoader.getHighScore()) {
@@ -83,6 +88,10 @@ public class GameWorld {
         return currentState == GameState.READY;
     }
 
+    public boolean isRunning(){
+        return currentState == GameState.RUNNING;
+    }
+
     public boolean isGameOver(){
         return currentState == GameState.GAMEOVER;
     }
@@ -91,18 +100,17 @@ public class GameWorld {
         return currentState == GameState.HIGHSCORE;
     }
 
-    public boolean isMenu() { return currentState == GameState.ISMENU; };
+    public boolean isMenu() { return currentState == GameState.MENU; };
 
     public void start(){
         currentState = GameState.RUNNING;
     }
 
     public void restart(){
-        currentState = GameState.READY;
         score = 0;
         bird.onRestart(midPointY - 5);
         scroller.onRestart();
-        currentState = GameState.READY;
+        ready();
     }
 
     public int getMidPointY(){
