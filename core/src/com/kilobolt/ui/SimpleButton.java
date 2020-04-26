@@ -15,7 +15,7 @@ public class SimpleButton {
     private boolean isPressed = false;
 
     public SimpleButton(float x, float y, float width, float height,
-                        TextureRegion bottomUp, TextureRegion bottomDown){
+                        TextureRegion buttonUp, TextureRegion buttonDown){
         this.x = x;
         this.y = y;
         this.width = width;
@@ -48,7 +48,7 @@ public class SimpleButton {
     }
 
     public boolean isTouchUp(int screenX, int screenY){
-        if(bounds.contains(screenX, screenY) && isPressed){
+        if(isPressed && bounds.contains(screenX, screenY)){
             isPressed = false;
             return true;
         }
